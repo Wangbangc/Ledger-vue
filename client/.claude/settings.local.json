@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls c:/Users/74788/Desktop/bs/demo/)",
+      "Read(//c/Users/74788/Desktop/bs/demo/**)",
+      "Bash(mysql -u root -pWbc13850179569 -e \"SELECT 1\")",
+      "Bash(where mysql *)",
+      "Bash(cmd //c \"where mysql\")",
+      "Bash(cmd //c \"dir /s /b \\\\\"C:\\\\Program Files\\\\MySQL\\\\mysql.exe\\\\\" 2>nul\")",
+      "Bash(cmd //c \"dir /s /b \\\\\"C:\\\\Program Files \\(x86\\)\\\\MySQL\\\\mysql.exe\\\\\" 2>nul\")",
+      "Bash(cmd //c \"sc query MySQL* 2>nul\")",
+      "Bash(cmd //c \"netstat -ano | findstr :3306\")",
+      "Bash(cmd //c \"where /R \\\\\"C:\\\\Program Files\\\\\" mysql.exe 2>nul\")",
+      "Bash(cmd //c \"where /R \\\\\"C:\\\\Program Files \\(x86\\)\\\\\" mysql.exe 2>nul\")",
+      "Bash(cmd //c \"where /R \\\\\"C:\\\\Users\\\\74788\\\\\" mysql.exe 2>nul\")",
+      "Bash(cmd //c \"wmic process where processid=7980 get executablepath 2>nul\")",
+      "Bash(cmd //c \"tasklist /fi \\\\\"PID eq 7980\\\\\" /fo csv /v 2>nul\")",
+      "Bash(powershell -Command \"Get-Process -Id 7980 | Select-Object Path\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path 'C:\\\\Program Files\\\\MySQL' -Recurse -Filter 'mysql.exe' -ErrorAction SilentlyContinue | Select-Object FullName\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path 'C:\\\\ProgramData\\\\MySQL' -Recurse -Filter 'mysql.exe' -ErrorAction SilentlyContinue | Select-Object FullName\")"
+    ]
+  }
+}
