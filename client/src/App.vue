@@ -20,6 +20,10 @@
           <el-icon><component :is="DataAnalysis" /></el-icon>
           <span>数据统计</span>
         </el-menu-item>
+        <el-menu-item index="/json">
+          <el-icon><component :is="DocumentCopy" /></el-icon>
+          <span>JSON 格式化</span>
+        </el-menu-item>
       </el-menu>
     </aside>
     <div class="main-area">
@@ -38,24 +42,32 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Notebook, DataAnalysis } from '@element-plus/icons-vue'
+import { Notebook, DataAnalysis, DocumentCopy } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
 
-const isLoggedIn = computed(() => !!localStorage.getItem('token'))
-const username = computed(() => localStorage.getItem('username') || '')
+const isLoggedIn = ref(!!localStorage.getItem('token'))
+const username = ref(localStorage.getItem('username') || '')
+
+watch(route, () => {
+  isLoggedIn.value = !!localStorage.getItem('token')
+  username.value = localStorage.getItem('username') || ''
+})
 const activeMenu = computed(() => route.path)
 const pageTitle = computed(() => {
   if (route.path === '/stats') return '数据统计'
+  if (route.path === '/json') return 'JSON 格式化'
   return '首页记账'
 })
 
 function logout() {
   localStorage.removeItem('token')
   localStorage.removeItem('username')
+  isLoggedIn.value = false
+  username.value = ''
   router.push('/login')
 }
 </script>
@@ -121,5 +133,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .top-bar {
+    padding: 0 12px;
+  }
+  .page-title {
+    font-size: 15px;
+  }
+  .content {
+    padding: 12px;
+  }
 }
 </style>

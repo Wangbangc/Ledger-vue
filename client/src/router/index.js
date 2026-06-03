@@ -3,12 +3,14 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import Stats from '../views/Statistics.vue'
+import JsonFormat from '../views/JsonFormat.vue'
 
 const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/', name: 'Home', component: Home },
   { path: '/stats', name: 'Stats', component: Stats },
+  { path: '/json', name: 'JsonFormat', component: JsonFormat },
 ]
 
 const router = createRouter({
