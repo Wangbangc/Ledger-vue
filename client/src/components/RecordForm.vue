@@ -47,7 +47,7 @@ import { ElMessage } from 'element-plus'
 
 const emit = defineEmits(['add'])
 
-const expenseCategories = ['餐饮', '交通', '购物', '娱乐', '住房', '医疗', '教育', '其他']
+const expenseCategories = ['餐饮', '交通', '购物', '娱乐', '住房', '医疗', '教育', '日用品', '通讯', '社交', '旅行', '宠物', '其他']
 const incomeCategories = ['工资', '奖金', '理财', '兼职', '其他']
 
 const form = reactive({
