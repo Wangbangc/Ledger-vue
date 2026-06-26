@@ -29,3 +29,10 @@ export const getRecords = (month) => api.get('/records', { params: { month } })
 export const addRecord = (data) => api.post('/records', data)
 export const deleteRecord = (id) => api.delete(`/records/${id}`)
 export const getStats = (month) => api.get('/stats', { params: { month } })
+
+// 每日记录
+export const getDailyLogGraph = (year) => api.get('/daily-logs/graph', { params: { year } })
+export const getDailyLogTodos = (date) => api.get(`/daily-logs/${date}`)
+export const addDailyTodo = (date, content) => api.post(`/daily-logs/${date}/todos`, { content })
+export const updateDailyTodo = (id, data) => api.put(`/daily-logs/todos/${id}`, data)
+export const deleteDailyTodo = (id) => api.delete(`/daily-logs/todos/${id}`)
