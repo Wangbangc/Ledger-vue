@@ -24,6 +24,10 @@
           <el-icon><component :is="DocumentCopy" /></el-icon>
           <span>JSON 格式化</span>
         </el-menu-item>
+        <el-menu-item index="/daily-log">
+          <el-icon><component :is="Calendar" /></el-icon>
+          <span>每日记录</span>
+        </el-menu-item>
       </el-menu>
     </aside>
     <div class="main-area">
@@ -44,7 +48,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Notebook, DataAnalysis, DocumentCopy } from '@element-plus/icons-vue'
+import { Notebook, DataAnalysis, DocumentCopy, Calendar } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -60,6 +64,7 @@ const activeMenu = computed(() => route.path)
 const pageTitle = computed(() => {
   if (route.path === '/stats') return '数据统计'
   if (route.path === '/json') return 'JSON 格式化'
+  if (route.path === '/daily-log') return '每日记录'
   return '首页记账'
 })
 

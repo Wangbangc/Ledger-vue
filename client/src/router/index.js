@@ -4,6 +4,7 @@ import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import Stats from '../views/Statistics.vue'
 import JsonFormat from '../views/JsonFormat.vue'
+import DailyLog from '../views/DailyLog/index.vue'
 
 const routes = [
   { path: '/login', name: 'Login', component: Login },
@@ -11,6 +12,7 @@ const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/stats', name: 'Stats', component: Stats },
   { path: '/json', name: 'JsonFormat', component: JsonFormat },
+  { path: '/daily-log', name: 'DailyLog', component: DailyLog },
 ]
 
 const router = createRouter({
