@@ -34,3 +34,26 @@ INSERT INTO records (type, amount, category, note, date) VALUES
 ('income', 8000.00, '工资', '5月工资', '2026-05-25'),
 ('expense', 299.00, '购物', '耳机', '2026-05-20'),
 ('expense', 45.00, '餐饮', '聚餐', '2026-05-18');
+
+-- 每日记录主表
+CREATE TABLE IF NOT EXISTS daily_logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  log_date DATE NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY uk_user_date (user_id, log_date)
+);
+
+-- 待办事项表
+CREATE TABLE IF NOT EXISTS daily_todos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  daily_log_id INT NOT NULL,
+  content VARCHAR(500) NOT NULL DEFAULT '',
+  is_done TINYINT(1) NOT NULL DEFAULT 0,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (daily_log_id) REFERENCES daily_logs(id) ON DELETE CASCADE
+);
