@@ -9,10 +9,10 @@ import DailyLog from '../views/DailyLog/index.vue'
 const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
-  { path: '/', name: 'Home', component: Home },
+  { path: '/', name: 'DailyLog', component: DailyLog },
+  { path: '/accounting', name: 'Home', component: Home },
   { path: '/stats', name: 'Stats', component: Stats },
   { path: '/json', name: 'JsonFormat', component: JsonFormat },
-  { path: '/daily-log', name: 'DailyLog', component: DailyLog },
 ]
 
 const router = createRouter({

@@ -13,8 +13,12 @@
         active-text-color="#fff"
       >
         <el-menu-item index="/">
+          <el-icon><component :is="Calendar" /></el-icon>
+          <span>每日记录</span>
+        </el-menu-item>
+        <el-menu-item index="/accounting">
           <el-icon><component :is="Notebook" /></el-icon>
-          <span>首页记账</span>
+          <span>记账</span>
         </el-menu-item>
         <el-menu-item index="/stats">
           <el-icon><component :is="DataAnalysis" /></el-icon>
@@ -23,10 +27,6 @@
         <el-menu-item index="/json">
           <el-icon><component :is="DocumentCopy" /></el-icon>
           <span>JSON 格式化</span>
-        </el-menu-item>
-        <el-menu-item index="/daily-log">
-          <el-icon><component :is="Calendar" /></el-icon>
-          <span>每日记录</span>
         </el-menu-item>
       </el-menu>
     </aside>
@@ -62,10 +62,10 @@ watch(route, () => {
 })
 const activeMenu = computed(() => route.path)
 const pageTitle = computed(() => {
+  if (route.path === '/accounting') return '记账'
   if (route.path === '/stats') return '数据统计'
   if (route.path === '/json') return 'JSON 格式化'
-  if (route.path === '/daily-log') return '每日记录'
-  return '首页记账'
+  return '每日记录'
 })
 
 function logout() {
