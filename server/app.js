@@ -3,6 +3,7 @@ const cors = require('cors');
 const { router, statsRouter } = require('./routes/records');
 const authRouter = require('./routes/auth');
 const dailyLogsRouter = require('./routes/dailyLogs');
+const habitsRouter = require('./routes/habits');
 const { authMiddleware } = require('./middleware/auth');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/records', authMiddleware, router);
 app.use('/api/stats', authMiddleware, statsRouter);
 app.use('/api/daily-logs', authMiddleware, dailyLogsRouter);
+app.use('/api/habits', authMiddleware, habitsRouter);
 
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
