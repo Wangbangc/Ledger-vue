@@ -16,6 +16,9 @@
       </div>
     </div>
 
+    <!-- 习惯管理 -->
+    <HabitManager @created="handleHabitCreated" />
+
     <!-- 贡献图 -->
     <ContributionGraph
       :year="currentYear"
@@ -29,6 +32,9 @@
       :date="selectedDate"
       @updated="loadGraph"
     />
+
+    <!-- 习惯进度 -->
+    <HabitProgress ref="habitProgressRef" />
   </div>
 </template>
 
@@ -37,11 +43,14 @@ import { ref, computed, onMounted } from 'vue'
 import { getDailyLogGraph } from '../../api'
 import ContributionGraph from './ContributionGraph.vue'
 import TodoList from './TodoList.vue'
+import HabitManager from './HabitManager.vue'
+import HabitProgress from './HabitProgress.vue'
 
 const currentYear = new Date().getFullYear()
 const today = formatDate(new Date())
 const selectedDate = ref(today)
 const graphData = ref([])
+const habitProgressRef = ref(null)
 
 // 连续记录天数
 const streak = computed(() => {
@@ -80,6 +89,11 @@ async function loadGraph() {
 
 function handleSelectDate(date) {
   selectedDate.value = date
+}
+
+function handleHabitCreated() {
+  loadGraph()
+  habitProgressRef.value?.loadHabits()
 }
 
 function formatDate(d) {
