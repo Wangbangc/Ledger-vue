@@ -128,7 +128,7 @@ function formatSchedule(schedule) {
 async function loadHabits() {
   try {
     const res = await getHabits()
-    habits.value = res.data.habits || []
+    habits.value = res.data || []
   } catch {
     ElMessage.error('加载习惯列表失败')
   }
