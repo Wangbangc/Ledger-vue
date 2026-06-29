@@ -36,3 +36,9 @@ export const getDailyLogTodos = (date) => api.get(`/daily-logs/${date}`)
 export const addDailyTodo = (date, content) => api.post(`/daily-logs/${date}/todos`, { content })
 export const updateDailyTodo = (id, data) => api.put(`/daily-logs/todos/${id}`, data)
 export const deleteDailyTodo = (id) => api.delete(`/daily-logs/todos/${id}`)
+export const reorderTodos = (orders) => api.put('/daily-logs/todos/reorder', { orders })
+
+// 习惯管理
+export const getHabits = () => api.get('/habits')
+export const createHabit = (data) => api.post('/habits', data)
+export const deleteHabit = (id) => api.delete(`/habits/${id}`)
