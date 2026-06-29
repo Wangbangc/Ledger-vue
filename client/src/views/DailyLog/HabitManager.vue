@@ -2,7 +2,7 @@
   <div class="habit-manager">
     <div class="habit-header">
       <span class="habit-title">习惯管理</span>
-      <el-button type="primary" size="small" @click="showDialog = true">
+      <el-button type="primary" size="small" @click="openDialog">
         <el-icon><Plus /></el-icon>
         <span>新建习惯</span>
       </el-button>
@@ -181,6 +181,10 @@ async function handleDelete(habit) {
   } catch {
     // 用户取消
   }
+}
+
+function openDialog() {
+  showDialog.value = true
 }
 
 function resetForm() {
