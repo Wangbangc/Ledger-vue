@@ -96,6 +96,37 @@ router.post('/:date/todos', async (req, res) => {
   }
 });
 
+// PUT /api/daily-logs/todos/reorder - 批量更新排序
+router.put('/todos/reorder', async (req, res) => {
+  try {
+    const { orders } = req.body;
+
+    if (!Array.isArray(orders)) {
+      return res.status(400).json({ error: 'orders 必须是数组' });
+    }
+
+    for (const item of orders) {
+      const [rows] = await pool.query(
+        `SELECT dt.id FROM daily_todos dt
+         INNER JOIN daily_logs dl ON dt.daily_log_id = dl.id
+         WHERE dt.id = ? AND dl.user_id = ?`,
+        [item.id, req.userId]
+      );
+
+      if (rows.length > 0) {
+        await pool.query(
+          'UPDATE daily_todos SET sort_order = ? WHERE id = ?',
+          [item.sort_order, item.id]
+        );
+      }
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/daily-logs/todos/:id - 编辑待办
 router.put('/todos/:id', async (req, res) => {
   try {
