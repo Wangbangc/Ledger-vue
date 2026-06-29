@@ -17,6 +17,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+        <span class="todo-progress">{{ doneCount }}/{{ totalCount }} 完成</span>
       </div>
     </div>
 
