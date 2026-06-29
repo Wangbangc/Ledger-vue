@@ -2,7 +2,22 @@
   <div class="todo-list">
     <div class="todo-header">
       <span class="todo-date">{{ displayDate }}</span>
-      <span class="todo-progress">{{ doneCount }}/{{ totalCount }} 完成</span>
+      <div class="todo-header-right">
+        <el-dropdown trigger="click" @command="handleSortModeChange">
+          <el-button text size="small" class="sort-btn">
+            <el-icon><Sort /></el-icon>
+            <span class="sort-label">{{ sortModeLabel }}</span>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="default" :class="{ 'is-active': sortMode === 'default' }">默认排序</el-dropdown-item>
+              <el-dropdown-item command="undone-first" :class="{ 'is-active': sortMode === 'undone-first' }">未完成优先</el-dropdown-item>
+              <el-dropdown-item command="newest" :class="{ 'is-active': sortMode === 'newest' }">最新创建</el-dropdown-item>
+              <el-dropdown-item command="done-last" :class="{ 'is-active': sortMode === 'done-last' }">已完成置底</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </div>
 
     <!-- 新增待办输入框 -->
@@ -17,9 +32,9 @@
     </div>
 
     <!-- 待办列表 -->
-    <div class="todo-items" v-if="todos.length > 0">
+    <div class="todo-items" ref="todoListRef" v-if="todos.length > 0">
       <TodoItem
-        v-for="todo in todos"
+        v-for="todo in sortedTodos"
         :key="todo.id"
         :todo="todo"
         @toggle="handleToggle"
@@ -49,10 +64,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { Plus, Sort } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getDailyLogTodos, addDailyTodo, updateDailyTodo, deleteDailyTodo } from '../../api'
+import Sortable from 'sortablejs'
+import { getDailyLogTodos, addDailyTodo, updateDailyTodo, deleteDailyTodo, reorderTodos } from '../../api'
 import TodoItem from './TodoItem.vue'
 
 const props = defineProps({ date: String })
@@ -60,6 +76,9 @@ const emit = defineEmits(['updated'])
 
 const todos = ref([])
 const newContent = ref('')
+const sortMode = ref('default')
+const todoListRef = ref(null)
+let sortableInstance = null
 
 const displayDate = computed(() => {
   if (!props.date) return ''
@@ -77,6 +96,25 @@ const progressColor = computed(() => {
   if (progressPercent.value >= 40) return '#40c463'
   if (progressPercent.value >= 20) return '#9be9a8'
   return '#ebedf0'
+})
+
+const sortModeLabel = computed(() => {
+  const labels = { default: '默认排序', 'undone-first': '未完成优先', newest: '最新创建', 'done-last': '已完成置底' }
+  return labels[sortMode.value] || '默认排序'
+})
+
+const sortedTodos = computed(() => {
+  const list = [...todos.value]
+  switch (sortMode.value) {
+    case 'undone-first':
+      return list.sort((a, b) => a.is_done - b.is_done || a.sort_order - b.sort_order)
+    case 'newest':
+      return list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    case 'done-last':
+      return list.sort((a, b) => a.is_done - b.is_done)
+    default:
+      return list.sort((a, b) => a.sort_order - b.sort_order)
+  }
 })
 
 async function loadTodos() {
@@ -137,6 +175,58 @@ async function handleDelete(id) {
 }
 
 watch(() => props.date, loadTodos, { immediate: true })
+
+function initSortable() {
+  if (sortableInstance) {
+    sortableInstance.destroy()
+    sortableInstance = null
+  }
+  nextTick(() => {
+    const el = todoListRef.value
+    if (!el) return
+    sortableInstance = Sortable.create(el, {
+      animation: 200,
+      ghostClass: 'drag-ghost',
+      chosenClass: 'drag-chosen',
+      dragClass: 'drag-drag',
+      handle: '.todo-item',
+      async onEnd(evt) {
+        const items = el.querySelectorAll('[data-todo-id]')
+        const orders = Array.from(items).map((item, index) => ({
+          id: Number(item.dataset.todoId),
+          sort_order: index,
+        }))
+        try {
+          await reorderTodos(orders)
+          sortMode.value = 'default'
+          await loadTodos()
+          emit('updated')
+        } catch {
+          ElMessage.error('排序保存失败')
+        }
+      },
+    })
+  })
+}
+
+watch(todos, () => {
+  initSortable()
+})
+
+function handleSortModeChange(mode) {
+  sortMode.value = mode
+}
+
+onMounted(() => {
+  initSortable()
+})
+
+onBeforeUnmount(() => {
+  if (sortableInstance) {
+    sortableInstance.destroy()
+    sortableInstance = null
+  }
+})
 </script>
 
 <style scoped>
@@ -157,9 +247,38 @@ watch(() => props.date, loadTodos, { immediate: true })
   font-weight: 600;
   color: #303133;
 }
+.todo-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .todo-progress {
   font-size: 13px;
   color: #909399;
+}
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #606266;
+  font-size: 13px;
+}
+.sort-btn:hover {
+  color: #409eff;
+}
+.sort-label {
+  font-size: 12px;
+}
+.drag-ghost {
+  opacity: 0.4;
+  background: #ecf5ff !important;
+  border-left-color: #409eff !important;
+}
+.drag-chosen {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.drag-drag {
+  opacity: 0.9;
 }
 .add-todo {
   margin-bottom: 12px;

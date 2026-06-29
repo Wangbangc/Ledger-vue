@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-item" :class="{ done: todo.is_done }">
+  <div class="todo-item" :class="{ done: todo.is_done }" :data-todo-id="todo.id">
     <div class="todo-check" @click="$emit('toggle', todo.id, todo.is_done)">
       <div class="check-circle" :class="{ checked: todo.is_done }">
         <el-icon v-if="todo.is_done"><Check /></el-icon>
