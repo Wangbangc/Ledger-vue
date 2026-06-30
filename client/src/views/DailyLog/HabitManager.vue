@@ -68,12 +68,9 @@
         </el-form-item>
 
         <el-form-item label="开始日期" required>
-          <el-date-picker
+          <el-input
             v-model="form.start_date"
             type="date"
-            placeholder="选择开始日期"
-            value-format="YYYY-MM-DD"
-            style="width: 100%"
           />
         </el-form-item>
 
@@ -110,10 +107,17 @@ const submitting = ref(false)
 
 const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
+function todayStr() {
+  const d = new Date()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${m}-${day}`
+}
+
 const form = reactive({
   name: '',
   scheduleDays: [],
-  start_date: '',
+  start_date: todayStr(),
   total_days: 30,
 })
 
@@ -190,7 +194,7 @@ function openDialog() {
 function resetForm() {
   form.name = ''
   form.scheduleDays = []
-  form.start_date = ''
+  form.start_date = todayStr()
   form.total_days = 30
 }
 
