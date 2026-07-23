@@ -41,9 +41,6 @@
       <main class="content">
         <router-view />
       </main>
-      <footer class="footer">
-        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">黔ICP备2026010442号</a>
-      </footer>
     </div>
   </div>
 </template>
@@ -142,23 +139,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   padding: 20px;
   overflow-y: auto;
 }
-.footer {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f0f2f5;
-  border-top: 1px solid #e8e8e8;
-  flex-shrink: 0;
-}
-.footer a {
-  font-size: 12px;
-  color: #999;
-  text-decoration: none;
-}
-.footer a:hover {
-  color: #666;
-}
 @media (max-width: 768px) {
   .sidebar {
     display: none;
@@ -171,12 +151,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   }
   .content {
     padding: 12px;
-  }
-  .footer {
-    height: 36px;
-  }
-  .footer a {
-    font-size: 11px;
   }
 }
 </style>

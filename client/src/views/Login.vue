@@ -18,6 +18,9 @@
         <router-link to="/register">去注册</router-link>
       </div>
     </el-card>
+    <div class="auth-footer">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">黔ICP备2026010442号</a>
+    </div>
   </div>
 </template>
 
@@ -65,4 +68,7 @@ async function handleLogin() {
 h2 { text-align: center; margin-bottom: 20px; color: #2196f3; }
 .link { text-align: center; margin-top: 8px; font-size: 14px; }
 .link a { color: #2196f3; text-decoration: none; }
+.auth-footer { position: fixed; bottom: 0; left: 0; right: 0; height: 40px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; }
+.auth-footer a { font-size: 12px; color: #999; text-decoration: none; }
+.auth-footer a:hover { color: #666; }
 </style>
